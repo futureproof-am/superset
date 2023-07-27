@@ -291,6 +291,7 @@ export const SaveDatasetModal = ({
         schema: datasource.schema,
         sql: datasource.sql,
         dbId: datasource.dbId || datasource?.database?.id,
+        schema: datasource?.schema,
         templateParams,
         datasourceName: datasetName,
         columns: selectedColumns,
