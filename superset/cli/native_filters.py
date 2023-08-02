@@ -368,17 +368,15 @@ def cleanup(
             json_metadata = json.loads(dashboard.json_metadata or "{}")
             position_json = json.loads(dashboard.position_json or "{}")
 
-            if "native_filter_migration" not in json_metadata:
-                click.echo(f"{str(dashboard)} has not been upgraded")
-                continue
-
             # Remove the saved filter configurations.
-            del json_metadata["native_filter_migration"]
-            dashboard.json_metadata = json.dumps(json_metadata)
+            if "native_filter_migration" in json_metadata:
+                del json_metadata["native_filter_migration"]
+                dashboard.json_metadata = json.dumps(json_metadata)
 
             for value in position_json.values():
                 if (
                     isinstance(value, dict)
+                    and value["type"] == "MARKDOWN"
                     and "native_filter_migration" in value["meta"]
                 ):
                     slice_ids.add(value["meta"]["native_filter_migration"]["chartId"])
